@@ -1,0 +1,32 @@
+import { defineConfig } from 'tsup'
+
+export default defineConfig({
+  entry: {
+    index: 'src/index.ts',
+    'core/index': 'src/core/index.ts',
+    'guards/index': 'src/guards/index.ts',
+    'object/index': 'src/object/index.ts',
+    'async/index': 'src/async/index.ts',
+    'collection/index': 'src/collection/index.ts',
+    'input/index': 'src/input/index.ts',
+    'flow/index': 'src/flow/index.ts',
+    'dx/index': 'src/dx/index.ts',
+    'typed/index': 'src/typed/index.ts',
+    'string/index': 'src/string/index.ts',
+    'fn/index': 'src/fn/index.ts',
+    'math/index': 'src/math/index.ts',
+    'result/index': 'src/result/index.ts',
+    'iterator/index': 'src/iterator/index.ts',
+    'decorator/index': 'src/decorator/index.ts',
+    'logic/index': 'src/logic/index.ts',
+    'narrowing/index': 'src/narrowing/index.ts',
+    'schema/index': 'src/schema/index.ts',
+  },
+  format: ['cjs', 'esm'],
+  dts: true,
+  splitting: true,
+  sourcemap: true,
+  clean: true,
+  treeshake: true,
+  minify: false,
+})

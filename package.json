@@ -1,0 +1,157 @@
+{
+  "name": "typetify",
+  "version": "0.1.0",
+  "description": "Runtime TypeScript helpers - like Lodash, but TS-first",
+  "main": "./dist/index.js",
+  "module": "./dist/index.mjs",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.mjs",
+      "require": "./dist/index.js"
+    },
+    "./core": {
+      "types": "./dist/core/index.d.ts",
+      "import": "./dist/core/index.mjs",
+      "require": "./dist/core/index.js"
+    },
+    "./guards": {
+      "types": "./dist/guards/index.d.ts",
+      "import": "./dist/guards/index.mjs",
+      "require": "./dist/guards/index.js"
+    },
+    "./object": {
+      "types": "./dist/object/index.d.ts",
+      "import": "./dist/object/index.mjs",
+      "require": "./dist/object/index.js"
+    },
+    "./async": {
+      "types": "./dist/async/index.d.ts",
+      "import": "./dist/async/index.mjs",
+      "require": "./dist/async/index.js"
+    },
+    "./collection": {
+      "types": "./dist/collection/index.d.ts",
+      "import": "./dist/collection/index.mjs",
+      "require": "./dist/collection/index.js"
+    },
+    "./input": {
+      "types": "./dist/input/index.d.ts",
+      "import": "./dist/input/index.mjs",
+      "require": "./dist/input/index.js"
+    },
+    "./flow": {
+      "types": "./dist/flow/index.d.ts",
+      "import": "./dist/flow/index.mjs",
+      "require": "./dist/flow/index.js"
+    },
+    "./dx": {
+      "types": "./dist/dx/index.d.ts",
+      "import": "./dist/dx/index.mjs",
+      "require": "./dist/dx/index.js"
+    },
+    "./typed": {
+      "types": "./dist/typed/index.d.ts",
+      "import": "./dist/typed/index.mjs",
+      "require": "./dist/typed/index.js"
+    },
+    "./string": {
+      "types": "./dist/string/index.d.ts",
+      "import": "./dist/string/index.mjs",
+      "require": "./dist/string/index.js"
+    },
+    "./fn": {
+      "types": "./dist/fn/index.d.ts",
+      "import": "./dist/fn/index.mjs",
+      "require": "./dist/fn/index.js"
+    },
+    "./math": {
+      "types": "./dist/math/index.d.ts",
+      "import": "./dist/math/index.mjs",
+      "require": "./dist/math/index.js"
+    },
+    "./result": {
+      "types": "./dist/result/index.d.ts",
+      "import": "./dist/result/index.mjs",
+      "require": "./dist/result/index.js"
+    },
+    "./iterator": {
+      "types": "./dist/iterator/index.d.ts",
+      "import": "./dist/iterator/index.mjs",
+      "require": "./dist/iterator/index.js"
+    },
+    "./decorator": {
+      "types": "./dist/decorator/index.d.ts",
+      "import": "./dist/decorator/index.mjs",
+      "require": "./dist/decorator/index.js"
+    },
+    "./logic": {
+      "types": "./dist/logic/index.d.ts",
+      "import": "./dist/logic/index.mjs",
+      "require": "./dist/logic/index.js"
+    },
+    "./narrowing": {
+      "types": "./dist/narrowing/index.d.ts",
+      "import": "./dist/narrowing/index.mjs",
+      "require": "./dist/narrowing/index.js"
+    },
+    "./schema": {
+      "types": "./dist/schema/index.d.ts",
+      "import": "./dist/schema/index.mjs",
+      "require": "./dist/schema/index.js"
+    }
+  },
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "build": "tsup",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "test:coverage": "vitest run --coverage",
+    "typecheck": "tsc --noEmit",
+    "lint": "eslint src --ext .ts",
+    "prepublishOnly": "npm run typecheck && npm run test && npm run build",
+    "prepare": "npm run build"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "keywords": [
+    "typescript",
+    "utils",
+    "helpers",
+    "runtime",
+    "type-safe",
+    "lodash",
+    "guards",
+    "utilities",
+    "typetify",
+    "typedash",
+    "narrowing",
+    "npm",
+    "pnpm",
+    "yarn"
+  ],
+  "author": "Siddick FOFANA <siddick.fofana@gmail.com>",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/yourusername/typetify.git"
+  },
+  "bugs": {
+    "url": "https://github.com/yourusername/typetify/issues"
+  },
+  "homepage": "https://github.com/yourusername/typetify#readme",
+  "devDependencies": {
+    "@types/node": "^20.10.0",
+    "tsup": "^8.0.1",
+    "typescript": "^5.3.3",
+    "vitest": "^1.1.0"
+  },
+  "engines": {
+    "node": ">=18"
+  },
+  "sideEffects": false
+}
