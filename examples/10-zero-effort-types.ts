@@ -1,25 +1,25 @@
 /**
- * Zero-Effort Types - TypeScript devient AMUSANT
+ * Zero-Effort Types - TypeScript becomes FUN
  * 
- * Plus de `type User = Infer<typeof UserSchema>` !
- * Définissez une fois, utilisez le type avec `.T`
+ * No more `type User = Infer<typeof UserSchema>`!
+ * Define once, use the type via `.T`
  */
 
 import { v, collection, collectionWithId, asyncData, matchUnion } from '../src/typed'
 
 // ============================================================================
-// LE PROBLÈME: Double travail
+// THE PROBLEM: Duplicate work
 // ============================================================================
 
-// ❌ AVANT: On définit le schéma ET on doit extraire le type manuellement
+// ❌ BEFORE: Define the schema AND manually extract the type
 // const UserSchema = object({ id: number(), name: string() })
-// type User = Infer<typeof UserSchema>  // <-- CASSE-COUILLE!
+// type User = Infer<typeof UserSchema>  // <-- Annoying!
 
 // ============================================================================
-// LA SOLUTION: Type Fantôme avec .T
+// THE SOLUTION: Phantom type via .T
 // ============================================================================
 
-// ✅ APRÈS: Une seule définition, le type vient avec!
+// ✅ AFTER: One definition, the type comes with it!
 const User = v.object({
   id: v.number(),
   name: v.string(),
@@ -28,24 +28,24 @@ const User = v.object({
   createdAt: v.date(),
 })
 
-// Utiliser le type directement avec .T - ZÉRO effort!
+// Use the type directly via .T - zero effort!
 function saveUser(user: typeof User.T) {
   console.log(`Saving ${user.name} (${user.email})`)
-  // Autocomplétion parfaite sur user.id, user.name, user.email, user.role, user.createdAt
+  // Perfect autocomplete on user.id, user.name, user.email, user.role, user.createdAt
 }
 
-// Parser des données d'API
+// Parse API data
 const apiData = { id: 1, name: 'Alice', email: 'alice@example.com', role: 'admin', createdAt: '2024-01-01' }
 const user = User.parse(apiData)
-// user est typé comme { id: number; name: string; email: string; role: 'admin' | 'user' | 'guest'; createdAt: Date }
+// user is typed as { id: number; name: string; email: string; role: 'admin' | 'user' | 'guest'; createdAt: Date }
 
 saveUser(user)
 
 // ============================================================================
-// MANIPULATION FLUIDE DES SCHÉMAS
+// FLUENT SCHEMA MANIPULATION
 // ============================================================================
 
-// Créer des variantes sans répétition
+// Create variants without repetition
 const PublicUser = User.pick('id', 'name', 'role')
 // typeof PublicUser.T = { id: number; name: string; role: 'admin' | 'user' | 'guest' }
 
@@ -55,14 +55,14 @@ const UserWithoutEmail = User.omit('email')
 const PartialUser = User.partial()
 // typeof PartialUser.T = { id?: number; name?: string; email?: string; ... }
 
-// Extension de schéma
+// Schema extension
 const AdminUser = User.extend({
   permissions: v.array(v.string()),
   department: v.string(),
 })
-// typeof AdminUser.T inclut permissions et department
+// typeof AdminUser.T includes permissions and department
 
-// Fusion de schémas
+// Schema merge
 const Timestamps = v.object({
   createdAt: v.date(),
   updatedAt: v.date(),
@@ -75,43 +75,43 @@ const Article = v.object({
 }).merge(Timestamps)
 
 // ============================================================================
-// COLLECTIONS TYPÉES AUTOMATIQUEMENT
+// AUTOMATICALLY TYPED COLLECTIONS
 // ============================================================================
 
-// Créer une collection à partir d'un schéma - UNE ligne!
+// Create a collection from a schema - ONE line!
 const Users = collection(User)
 
-// Tout est typé automatiquement!
+// Everything is typed automatically!
 Users.add({ id: 1, name: 'Alice', email: 'alice@example.com', role: 'admin', createdAt: new Date() })
 Users.add({ id: 2, name: 'Bob', email: 'bob@example.com', role: 'user', createdAt: new Date() })
 Users.add({ id: 3, name: 'Charlie', email: 'charlie@example.com', role: 'guest', createdAt: new Date() })
 
-// Recherche avec autocomplétion sur les clés
+// Find with autocomplete on keys
 const admin = Users.find('role', 'admin')
 console.log('Admin:', admin?.name) // Alice
 
-// Filtrage type-safe
+// Type-safe filtering
 const nonGuests = Users.where(u => u.role !== 'guest')
 console.log('Non-guests:', nonGuests.map(u => u.name)) // ['Alice', 'Bob']
 
-// Extraction de propriétés
+// Pluck properties
 const names = Users.pluck('name')
 console.log('Names:', names) // ['Alice', 'Bob', 'Charlie']
 
-// Pick sur tous les items
+// Pick on all items
 const publicUsers = Users.pick('id', 'name')
 console.log('Public users:', publicUsers) // [{ id: 1, name: 'Alice' }, ...]
 
-// Groupement
+// Grouping
 const byRole = Users.groupBy('role')
 console.log('Admins:', byRole.get('admin')?.length) // 1
 
-// Tri
+// Sorting
 const sorted = Users.sortBy('name', 'asc')
 console.log('Sorted:', sorted.map(u => u.name)) // ['Alice', 'Bob', 'Charlie']
 
 // ============================================================================
-// COLLECTION AVEC ID
+// COLLECTION WITH ID
 // ============================================================================
 
 const UsersById = collectionWithId(User, 'id')
@@ -119,7 +119,7 @@ const UsersById = collectionWithId(User, 'id')
 UsersById.add({ id: 1, name: 'Alice', email: 'alice@example.com', role: 'admin', createdAt: new Date() })
 UsersById.add({ id: 2, name: 'Bob', email: 'bob@example.com', role: 'user', createdAt: new Date() })
 
-// Opérations par ID
+// Operations by ID
 const alice = UsersById.byId(1)
 console.log('Found by ID:', alice?.name) // Alice
 
@@ -130,39 +130,39 @@ UsersById.removeById(2)
 console.log('Remaining:', UsersById.length) // 1
 
 // ============================================================================
-// INTÉGRATION AVEC ASYNC DATA
+// ASYNC DATA INTEGRATION
 // ============================================================================
 
-// État async pour la collection
+// Async state for the collection
 type UserType = typeof User.T
 const usersState = asyncData<UserType[]>()
 
-// Simuler le chargement
+// Simulate loading
 const loadingState = usersState.loading()
 console.log('Status:', loadingState.status) // 'loading'
 
-// Simuler le succès
+// Simulate success
 const successState = usersState.success(Users.toArray())
 if (usersState.isSuccess(successState)) {
   console.log('Loaded users:', successState.data.length)
 }
 
-// Pattern matching avec type guards
+// Pattern matching with type guards
 function renderUsersState(s: { status: 'idle' } | { status: 'loading' } | { status: 'success'; data: UserType[] } | { status: 'error'; error: Error }): string {
-  if (s.status === 'idle') return 'Cliquez pour charger'
-  if (s.status === 'loading') return 'Chargement...'
-  if (s.status === 'success') return `${s.data.length} utilisateurs chargés`
-  if (s.status === 'error') return `Erreur: ${s.error.message}`
-  return 'État inconnu'
+  if (s.status === 'idle') return 'Click to load'
+  if (s.status === 'loading') return 'Loading...'
+  if (s.status === 'success') return `${s.data.length} users loaded`
+  if (s.status === 'error') return `Error: ${s.error.message}`
+  return 'Unknown state'
 }
 
 console.log(renderUsersState(successState))
 
 // ============================================================================
-// VALIDATION SAFE
+// SAFE VALIDATION
 // ============================================================================
 
-// safeParse retourne un Result au lieu de throw
+// safeParse returns a Result instead of throwing
 const result = User.safeParse({ id: 'not a number', name: 123 })
 
 if (result.ok) {
@@ -175,45 +175,45 @@ if (result.ok) {
 const maybeUser: unknown = { id: 1, name: 'Test', email: 'test@test.com', role: 'user', createdAt: new Date() }
 
 if (User.is(maybeUser)) {
-  // maybeUser est maintenant typé comme typeof User.T
+  // maybeUser is now typed as typeof User.T
   console.log('Valid user:', maybeUser.name)
 }
 
 // ============================================================================
-// RÉSUMÉ: ZÉRO EFFORT, MAXIMUM SÉCURITÉ
+// SUMMARY: ZERO EFFORT, MAXIMUM SAFETY
 // ============================================================================
 
 console.log(`
 ╔══════════════════════════════════════════════════════════════════╗
-║              TYPETIFY - ZÉRO EFFORT, MAXIMUM SÉCURITÉ            ║
+║              TYPETIFY - ZERO EFFORT, MAXIMUM SAFETY              ║
 ╠══════════════════════════════════════════════════════════════════╣
 ║                                                                  ║
-║  DÉFINITION (1 ligne = type + validation)                        ║
+║  DEFINITION (1 line = type + validation)                          ║
 ║  const User = v.object({                                         ║
 ║    id: v.number(),                                               ║
 ║    name: v.string(),                                             ║
 ║    email: v.email(),                                             ║
 ║  })                                                              ║
 ║                                                                  ║
-║  UTILISATION DU TYPE                                             ║
+║  TYPE USAGE                                                      ║
 ║  function save(user: typeof User.T) { ... }                      ║
-║  // Pas de Infer<typeof ...> !                                   ║
+║  // No Infer<typeof ...>!                                        ║
 ║                                                                  ║
 ║  MANIPULATION                                                    ║
-║  User.pick('id', 'name')     → Nouveau schéma                    ║
-║  User.omit('password')       → Sans certains champs              ║
-║  User.partial()              → Tous optionnels                   ║
-║  User.extend({ ... })        → Ajouter des champs                ║
+║  User.pick('id', 'name')     → New schema                        ║
+║  User.omit('password')       → Without some fields               ║
+║  User.partial()              → All optional                      ║
+║  User.extend({ ... })        → Add fields                        ║
 ║                                                                  ║
-║  COLLECTION (1 ligne = CRUD complet)                             ║
+║  COLLECTION (1 line = full CRUD)                                 ║
 ║  const Users = collection(User)                                  ║
-║  Users.add({ ... })          → Typé!                             ║
-║  Users.find('name', 'Alice') → Autocomplétion!                   ║
+║  Users.add({ ... })          → Typed!                            ║
+║  Users.find('name', 'Alice') → Autocomplete!                     ║
 ║  Users.pluck('name')         → string[]                          ║
-║  Users.groupBy('role')       → Map typée                         ║
+║  Users.groupBy('role')       → Typed Map                         ║
 ║                                                                  ║
 ║  VALIDATION                                                      ║
-║  User.parse(data)            → Typé ou throw                     ║
+║  User.parse(data)            → Typed or throws                   ║
 ║  User.safeParse(data)        → Result<T, Error>                  ║
 ║  User.is(data)               → Type guard                        ║
 ║                                                                  ║
@@ -221,10 +221,10 @@ console.log(`
 `)
 
 // ============================================================================
-// EXEMPLE COMPLET: API REST
+// COMPLETE EXAMPLE: REST API
 // ============================================================================
 
-// Définir les modèles
+// Define models
 const Post = v.object({
   id: v.number(),
   title: v.string(),
@@ -242,25 +242,25 @@ const Comment = v.object({
   createdAt: v.date(),
 })
 
-// Créer les collections
+// Create collections
 const Posts = collectionWithId(Post, 'id')
 const Comments = collectionWithId(Comment, 'id')
 
-// Ajouter des données
+// Add data
 Posts.add({ id: 1, title: 'Hello World', body: 'My first post', authorId: 1, published: true, tags: ['intro'] })
 Posts.add({ id: 2, title: 'TypeScript Tips', body: 'Advanced TS', authorId: 1, published: false, tags: ['typescript', 'tips'] })
 
 Comments.add({ id: 1, postId: 1, authorId: 2, content: 'Great post!', createdAt: new Date() })
 Comments.add({ id: 2, postId: 1, authorId: 3, content: 'Thanks for sharing', createdAt: new Date() })
 
-// Requêtes type-safe
+// Type-safe queries
 const publishedPosts = Posts.where(p => p.published)
 const postComments = Comments.whereEquals('postId', 1)
 
 console.log('\n📝 Published posts:', publishedPosts.map(p => p.title))
 console.log('💬 Comments on post 1:', postComments.length)
 
-// Fonction API type-safe
+// Type-safe API function
 async function getPostWithComments(postId: number): Promise<{
   post: typeof Post.T
   comments: typeof Comment.T[]
@@ -272,7 +272,7 @@ async function getPostWithComments(postId: number): Promise<{
   return { post, comments }
 }
 
-// Utilisation
+// Usage
 getPostWithComments(1).then(result => {
   if (result) {
     console.log(`\n📄 ${result.post.title}`)

@@ -1,13 +1,13 @@
 /**
- * Solutions aux problèmes de manipulation de types TypeScript
+ * Solutions to TypeScript type-manipulation problems
  * 
- * Ce fichier démontre comment Typetify résout les difficultés
- * que rencontrent les développeurs avec les unions, intersections,
- * et la programmation au niveau des types.
+ * This file demonstrates how Typetify solves the difficulties
+ * developers encounter with unions, intersections,
+ * and type-level programming.
  */
 
 // ============================================================================
-// PROBLÈME 1: L'enfer de l'Intersection (&) vs Union (|)
+// PROBLEM 1: Intersection (&) vs Union (|) hell
 // ============================================================================
 
 import type {
@@ -45,56 +45,56 @@ import {
   impossible,
 } from '../src/typed'
 
-// ❌ PROBLÈME: L'intersection de types avec propriétés conflictuelles = never
+// ❌ PROBLEM: Intersecting types with conflicting properties = never
 type BadIntersection = { name: string } & { name: number }
-// BadIntersection['name'] est 'never' car string & number = never
+// BadIntersection['name'] is 'never' because string & number = never
 
-// ✅ SOLUTION: SafeMerge gère proprement les conflits
+// ✅ SOLUTION: SafeMerge handles conflicts cleanly
 type A = { name: string; age: number }
 type B = { name: string; email: string }
 type Merged = SafeMerge<A, B>
 // { name: string; age: number; email: string }
 
-// Vérification que le type est correct
+// Verify the type is correct
 type _TestMerge = AssertEqual<Merged, { age: number; name: string; email: string }>
 
-// ✅ SOLUTION: Détecter les conflits avant qu'ils ne causent des problèmes
+// ✅ SOLUTION: Detect conflicts before they cause problems
 type Conflicts = ConflictingKeys<{ a: string; b: number }, { a: number; b: number }>
-// 'a' - car 'a' a des types différents
+// 'a' - because 'a' has different types
 
 type WouldBeNever = IntersectionIsNever<{ a: string }, { a: number }>
-// true - avertissement que l'intersection serait never
+// true - warning that the intersection would be never
 
 // ============================================================================
-// PROBLÈME 2: Les Discriminated Unions mal comprises
+// PROBLEM 2: Misunderstood discriminated unions
 // ============================================================================
 
-// ❌ PROBLÈME: États impossibles avec des booléens
+// ❌ PROBLEM: Impossible states with booleans
 interface BadState {
   isLoading: boolean
   isError: boolean
   data?: User
   error?: Error
 }
-// Permet isLoading: true ET data: User (état impossible!)
+// Allows isLoading: true AND data: User (impossible state!)
 
 interface User {
   id: number
   name: string
 }
 
-// ✅ SOLUTION: Discriminated Union avec VariantUnion
+// ✅ SOLUTION: Discriminated union with VariantUnion
 type ApiState = VariantUnion<'status', {
   loading: {}
   success: { data: User }
   error: { message: string }
 }>
-// Équivalent à:
+// Equivalent to:
 // | { status: 'loading' }
 // | { status: 'success'; data: User }
 // | { status: 'error'; message: string }
 
-// ✅ SOLUTION: TaggedUnion pour le pattern 'tag'
+// ✅ SOLUTION: TaggedUnion for the 'tag' pattern
 type Result<T> = TaggedUnion<{
   ok: { value: T }
   err: { error: Error }
@@ -102,7 +102,7 @@ type Result<T> = TaggedUnion<{
 // | { tag: 'ok'; value: T }
 // | { tag: 'err'; error: Error }
 
-// ✅ SOLUTION: TypedUnion pour le pattern 'type' (Redux-style)
+// ✅ SOLUTION: TypedUnion for the 'type' pattern (Redux-style)
 type Action = TypedUnion<{
   increment: { amount: number }
   decrement: { amount: number }
@@ -113,30 +113,30 @@ type Action = TypedUnion<{
 // | { type: 'reset' }
 
 // ============================================================================
-// PROBLÈME 3: Pattern Matching exhaustif
+// PROBLEM 3: Exhaustive pattern matching
 // ============================================================================
 
-// ❌ PROBLÈME: Oublier un cas dans un switch
+// ❌ PROBLEM: Forgetting a case in a switch
 function handleStateBad(state: ApiState): string {
   switch (state.status) {
     case 'loading': return 'Loading...'
     case 'success': return state.data.name
     case 'error': return state.message
-    // Sans Typetify, on peut facilement oublier un cas
+    // Without Typetify, it's easy to forget a case
   }
 }
 
-// ✅ SOLUTION: matchUnion avec exhaustivité garantie
+// ✅ SOLUTION: matchUnion with guaranteed exhaustiveness
 function handleStateGood(state: ApiState): string {
   return matchUnion(state, 'status', {
     loading: () => 'Loading...',
     success: (s) => `Hello ${s.data.name}`,
     error: (s) => `Error: ${s.message}`,
-    // TypeScript erreur si on oublie un cas!
+    // TypeScript errors if you forget a case!
   })
 }
 
-// ✅ SOLUTION: match() builder pour plus de flexibilité
+// ✅ SOLUTION: match() builder for more flexibility
 function handleStateBuilder(state: ApiState): string {
   return match(state, 'status')
     .with('loading', () => 'Loading...')
@@ -145,71 +145,71 @@ function handleStateBuilder(state: ApiState): string {
     .exhaustive() as string
 }
 
-// ✅ SOLUTION: matchValue pour les unions simples
+// ✅ SOLUTION: matchValue for simple unions
 type Status = 'pending' | 'active' | 'completed'
 
 function getStatusLabel(status: Status): string {
   return matchValue(status, {
-    pending: () => '⏳ En attente',
-    active: () => '🔄 En cours',
-    completed: () => '✅ Terminé',
+    pending: () => '⏳ Pending',
+    active: () => '🔄 In progress',
+    completed: () => '✅ Completed',
   })
 }
 
 // ============================================================================
-// PROBLÈME 4: Types qui "explosent" (lisibilité)
+// PROBLEM 4: Types that "explode" (readability)
 // ============================================================================
 
-// ❌ PROBLÈME: Types illisibles dans l'IDE
+// ❌ PROBLEM: Unreadable types in the IDE
 type ComplexType = Pick<Omit<User & { settings: { theme: string } }, 'id'>, 'name' | 'settings'>
-// L'infobulle montre: Pick<Omit<User & { settings: { theme: string } }, 'id'>, 'name' | 'settings'>
+// Tooltip shows: Pick<Omit<User & { settings: { theme: string } }, 'id'>, 'name' | 'settings'>
 
-// ✅ SOLUTION: Expand pour "aplatir" le type
+// ✅ SOLUTION: Expand to "flatten" the type
 type ReadableType = Expand<ComplexType>
-// L'infobulle montre: { name: string; settings: { theme: string } }
+// Tooltip shows: { name: string; settings: { theme: string } }
 
-// ✅ SOLUTION: ExpandDeep pour les types imbriqués
+// ✅ SOLUTION: ExpandDeep for nested types
 type NestedComplex = {
   user: Pick<User, 'name'> & { profile: Partial<{ bio: string; avatar: string }> }
 }
 type ReadableNested = ExpandDeep<NestedComplex>
-// Montre la structure complète aplatie
+// Shows the fully flattened structure
 
-// ✅ SOLUTION: Prettify (déjà dans types.ts)
+// ✅ SOLUTION: Prettify (already in types.ts)
 type PrettyType = Prettify<{ a: 1 } & { b: 2 } & { c: 3 }>
 // { a: 1; b: 2; c: 3 }
 
 // ============================================================================
-// PROBLÈME 5: Merge intelligent
+// PROBLEM 5: Smart merge
 // ============================================================================
 
 const base = { name: 'John', age: 30, settings: { theme: 'light' } }
 const override = { age: 31, settings: { notifications: true } }
 
-// ❌ PROBLÈME: Spread perd la précision des types imbriqués
+// ❌ PROBLEM: Spread loses precision for nested types
 const badMerge = { ...base, ...override }
-// settings est complètement remplacé, pas fusionné
+// settings is fully replaced, not merged
 
-// ✅ SOLUTION: merge() pour fusion simple avec types précis
+// ✅ SOLUTION: merge() for a simple merge with precise types
 const simpleMerge = merge(base, override)
-// Type préservé correctement
+// Type is preserved correctly
 
-// ✅ SOLUTION: deepMergeFn() pour fusion récursive
+// ✅ SOLUTION: deepMergeFn() for a recursive merge
 const deepMerged = deepMergeFn(base, override)
 // settings contient { theme: 'light', notifications: true }
 
-// ✅ SOLUTION: mergeWith() pour contrôle des conflits
+// ✅ SOLUTION: mergeWith() for conflict control
 const customMerge = mergeWith(
   { count: 10, name: 'A' },
   { count: 5, name: 'B' },
   {
-    count: (a, b) => a + b, // Additionner au lieu de remplacer
+    count: (a, b) => a + b, // Add instead of replace
   }
 )
 // { count: 15, name: 'B' }
 
 // ============================================================================
-// PROBLÈME 6: Extraire des membres d'une union
+// PROBLEM 6: Extracting members from a union
 // ============================================================================
 
 type Event = 
@@ -217,99 +217,99 @@ type Event =
   | { type: 'keypress'; key: string }
   | { type: 'scroll'; delta: number }
 
-// ✅ SOLUTION: Discriminate pour extraire un membre
+// ✅ SOLUTION: Discriminate to extract a member
 type ClickEvent = Discriminate<Event, 'type', 'click'>
 // { type: 'click'; x: number; y: number }
 
-// ✅ SOLUTION: ExcludeDiscriminant pour exclure un membre
+// ✅ SOLUTION: ExcludeDiscriminant to exclude a member
 type NonClickEvent = ExcludeDiscriminant<Event, 'type', 'click'>
 // { type: 'keypress'; key: string } | { type: 'scroll'; delta: number }
 
 // ============================================================================
-// PROBLÈME 7: Débogage de types
+// PROBLEM 7: Type debugging
 // ============================================================================
 
-// ✅ SOLUTION: showType pour inspecter un type à runtime
+// ✅ SOLUTION: showType to inspect a type at runtime
 const config = { host: 'localhost', port: 3000 } as const
 const inspected = showType(config)
-// Hover sur 'inspected' pour voir le type exact
+// Hover 'inspected' to see the exact type
 
-// ✅ SOLUTION: AssertEqual pour tests de types
+// ✅ SOLUTION: AssertEqual for type tests
 type _Test1 = AssertEqual<string, string> // OK
-// type _Test2 = AssertEqual<string, number> // Erreur de compilation!
+// type _Test2 = AssertEqual<string, number> // Compile-time error!
 
-// ✅ SOLUTION: AssertNotNever pour détecter les types never accidentels
+// ✅ SOLUTION: AssertNotNever to detect accidental never types
 type SafeType = AssertNotNever<string> // OK
-// type UnsafeType = AssertNotNever<string & number> // Erreur! C'est never
+// type UnsafeType = AssertNotNever<string & number> // Error! It's never
 
-// ✅ SOLUTION: Equal pour vérifications conditionnelles
+// ✅ SOLUTION: Equal for conditional checks
 type AreEqual = Equal<{ a: 1 }, { a: 1 }> // true
 type AreNotEqual = Equal<{ a: 1 }, { a: 2 }> // false
 
-// ✅ SOLUTION: impossible() pour exhaustiveness checking
+// ✅ SOLUTION: impossible() for exhaustiveness checking
 function processEvent(event: Event): string {
   switch (event.type) {
     case 'click': return `Click at ${event.x}, ${event.y}`
     case 'keypress': return `Key: ${event.key}`
     case 'scroll': return `Scroll: ${event.delta}`
-    default: return impossible(event) // Erreur si on oublie un cas
+    default: return impossible(event) // Error if we forget a case
   }
 }
 
 // ============================================================================
-// PROBLÈME 8: Conversion Union <-> Tuple
+// PROBLEM 8: Union <-> Tuple conversion
 // ============================================================================
 
-// ✅ SOLUTION: UnionToTuple pour convertir une union en tuple
+// ✅ SOLUTION: UnionToTuple to convert a union to a tuple
 type Colors = 'red' | 'green' | 'blue'
 type ColorTuple = UnionToTuple<Colors>
-// ['red', 'green', 'blue'] (ordre peut varier)
+// ['red', 'green', 'blue'] (order may vary)
 
 // ============================================================================
-// RÉSUMÉ: Typetify masque la complexité derrière des fonctions simples
+// SUMMARY: Typetify hides complexity behind simple functions
 // ============================================================================
 
 console.log(`
 ╔══════════════════════════════════════════════════════════════════╗
-║           TYPETIFY - MANIPULATION DE TYPES SIMPLIFIÉE            ║
+║           TYPETIFY - SIMPLIFIED TYPE MANIPULATION                ║
 ╠══════════════════════════════════════════════════════════════════╣
 ║                                                                  ║
 ║  UNIONS & INTERSECTIONS                                          ║
-║  ├─ SafeMerge<A, B>      → Fusion sans conflits                  ║
-║  ├─ IntersectionIsNever  → Détecte les intersections never       ║
-║  ├─ ConflictingKeys      → Trouve les clés en conflit            ║
-║  └─ Discriminate         → Extrait un membre d'une union         ║
+║  ├─ SafeMerge<A, B>      → Merge without conflicts               ║
+║  ├─ IntersectionIsNever  → Detects never intersections           ║
+║  ├─ ConflictingKeys      → Finds conflicting keys                ║
+║  └─ Discriminate         → Extracts a union member               ║
 ║                                                                  ║
 ║  DISCRIMINATED UNIONS                                            ║
-║  ├─ VariantUnion         → Crée une union discriminée            ║
+║  ├─ VariantUnion         → Creates a discriminated union         ║
 ║  ├─ TaggedUnion          → Pattern { tag: 'xxx' }                ║
 ║  ├─ TypedUnion           → Pattern { type: 'xxx' }               ║
-║  └─ matchUnion()         → Pattern matching exhaustif            ║
+║  └─ matchUnion()         → Exhaustive pattern matching           ║
 ║                                                                  ║
-║  LISIBILITÉ DES TYPES                                            ║
-║  ├─ Prettify<T>          → Aplatit les intersections             ║
-║  ├─ Expand<T>            → Montre le type final                  ║
-║  └─ ExpandDeep<T>        → Expansion récursive                   ║
+║  TYPE READABILITY                                                ║
+║  ├─ Prettify<T>          → Flattens intersections                ║
+║  ├─ Expand<T>            → Shows the final type                  ║
+║  └─ ExpandDeep<T>        → Recursive expansion                   ║
 ║                                                                  ║
-║  MERGE INTELLIGENT                                               ║
-║  ├─ merge()              → Fusion simple typée                   ║
-║  ├─ deepMergeFn()        → Fusion récursive                      ║
-║  └─ mergeWith()          → Fusion avec résolveurs                ║
+║  SMART MERGE                                                     ║
+║  ├─ merge()              → Typed shallow merge                   ║
+║  ├─ deepMergeFn()        → Recursive merge                       ║
+║  └─ mergeWith()          → Merge with resolvers                  ║
 ║                                                                  ║
-║  DÉBOGAGE                                                        ║
-║  ├─ showType()           → Inspecte un type                      ║
-║  ├─ AssertEqual          → Vérifie l'égalité de types            ║
-║  ├─ AssertNotNever       → Détecte les types never               ║
+║  DEBUGGING                                                      ║
+║  ├─ showType()           → Inspect a type                        ║
+║  ├─ AssertEqual          → Check type equality                   ║
+║  ├─ AssertNotNever       → Detect never types                    ║
 ║  └─ impossible()         → Exhaustiveness checking               ║
 ║                                                                  ║
 ╚══════════════════════════════════════════════════════════════════╝
 `)
 
 // ============================================================================
-// EXEMPLE COMPLET: API avec états typés
+// COMPLETE EXAMPLE: API with typed states
 // ============================================================================
 
-// Définition des états possibles
+// Definition of the possible states
 type RequestState<T> = VariantUnion<'status', {
   idle: {}
   loading: { startedAt: Date }
@@ -317,20 +317,20 @@ type RequestState<T> = VariantUnion<'status', {
   error: { error: Error; failedAt: Date }
 }>
 
-// Fonction de rendu type-safe
+// Type-safe render function
 function renderRequest<T>(
   state: RequestState<T>,
   render: { data: (data: T) => string }
 ): string {
   return matchUnion(state, 'status', {
-    idle: () => 'Prêt à charger',
-    loading: (s) => `Chargement depuis ${s.startedAt.toISOString()}...`,
+    idle: () => 'Ready to load',
+    loading: (s) => `Loading since ${s.startedAt.toISOString()}...`,
     success: (s) => render.data(s.data),
-    error: (s) => `Erreur: ${s.error.message}`,
+    error: (s) => `Error: ${s.error.message}`,
   })
 }
 
-// Utilisation
+// Usage
 const userState: RequestState<User> = {
   status: 'success',
   data: { id: 1, name: 'Alice' },
@@ -338,7 +338,7 @@ const userState: RequestState<User> = {
 }
 
 const output = renderRequest(userState, {
-  data: (user) => `Utilisateur: ${user.name}`,
+  data: (user) => `User: ${user.name}`,
 })
 
-console.log(output) // "Utilisateur: Alice"
+console.log(output) // "User: Alice"

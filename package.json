@@ -138,12 +138,12 @@
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/yourusername/typetify.git"
+    "url": "git+https://github.com/CodeSenior/typetify.git"
   },
   "bugs": {
-    "url": "https://github.com/yourusername/typetify/issues"
+    "url": "https://github.com/CodeSenior/typetify/issues"
   },
-  "homepage": "https://github.com/yourusername/typetify#readme",
+  "homepage": "https://github.com/CodeSenior/typetify#readme",
   "devDependencies": {
     "@types/node": "^20.10.0",
     "tsup": "^8.0.1",

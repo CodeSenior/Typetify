@@ -1,13 +1,13 @@
 /**
- * Solutions aux Pain Points TypeScript identifiés par Gemini
+ * Solutions to TypeScript pain points identified by Gemini
  * 
- * Ce fichier démontre comment Typetify résout les 6 principales douleurs
- * des développeurs TypeScript.
+ * This file demonstrates how Typetify solves the 6 main pain points
+ * TypeScript developers run into.
  */
 
 // ============================================================================
-// PAIN POINT 1: Type Narrowing qui s'évapore
-// Problème: users.filter(u => !!u) renvoie toujours (User | null)[]
+// PAIN POINT 1: Type narrowing that evaporates
+// Problem: users.filter(u => !!u) still returns (User | null)[]
 // ============================================================================
 
 import {
@@ -49,21 +49,21 @@ const usersWithNulls: (User | null | undefined)[] = [
   undefined,
 ]
 
-// ✅ APRÈS: Le type est correctement narrowé à User[]
+// ✅ AFTER: The type is properly narrowed to User[]
 const users = filterDefined(usersWithNulls)
 // Type: User[]
 
-// Avec les valeurs falsy
+// With falsy values
 const mixedValues = ['hello', '', 0, null, 'world', false, 42]
 const truthyValues = filterTruthy(mixedValues)
-// Type: (string | number)[] - sans les falsy!
+// Type: (string | number)[] - without falsy values!
 
-// Avec un type guard personnalisé
+// With a custom type guard
 const isAdmin = (u: User): u is User & { role: 'admin' } => u.role === 'admin'
 const admins = filterByGuard(users, isAdmin)
 // Type: (User & { role: 'admin' })[]
 
-// Partition: séparer en deux groupes typés
+// Partition: split into two typed groups
 const [adminUsers, regularUsers] = partitionByGuard(users, isAdmin)
 // adminUsers: (User & { role: 'admin' })[]
 // regularUsers: User[]
@@ -71,20 +71,20 @@ const [adminUsers, regularUsers] = partitionByGuard(users, isAdmin)
 console.log('Pain Point 1 - Narrowing:', { users, truthyValues, admins })
 
 // ============================================================================
-// PAIN POINT 2: Try/Catch qui perd le type
-// Problème: Dans catch(e), e est de type unknown
+// PAIN POINT 2: try/catch that loses types
+// Problem: in catch(e), e is typed as unknown
 // ============================================================================
 
 import { tryCatch, tryCatchAsync } from '../src/flow'
 import { awaitTo } from '../src/async'
 import { ok, err, matchResult, andThen, type Result } from '../src/result'
 
-// ❌ AVANT: try/catch avec unknown
+// ❌ BEFORE: try/catch with unknown
 function riskyOld(input: string): number {
   try {
     return JSON.parse(input)
   } catch (e) {
-    // e est unknown - on doit faire des checks manuels
+    // e is unknown - we need manual checks
     if (e instanceof Error) {
       console.error(e.message)
     }
@@ -92,7 +92,7 @@ function riskyOld(input: string): number {
   }
 }
 
-// ✅ APRÈS: Result<T, Error> avec type safety complet
+// ✅ AFTER: Result<T, Error> with full type safety
 function riskyNew(input: string): Result<number, Error> {
   return tryCatch(() => JSON.parse(input))
 }
@@ -100,10 +100,10 @@ function riskyNew(input: string): Result<number, Error> {
 const result = riskyNew('42')
 const value = matchResult(result, {
   ok: (n) => `Parsed: ${n}`,
-  err: (e) => `Error: ${e.message}`, // e est typé Error!
+  err: (e) => `Error: ${e.message}`, // e is typed as Error!
 })
 
-// Chaînage sans try/catch
+// Chaining without try/catch
 function parseAndDouble(input: string): Result<number, Error> {
   return andThen(
     tryCatch(() => JSON.parse(input)),
@@ -111,25 +111,25 @@ function parseAndDouble(input: string): Result<number, Error> {
   )
 }
 
-// Async avec awaitTo (tuple pattern)
+// Async with awaitTo (tuple pattern)
 async function fetchUserSafe(id: number) {
   const [error, user] = await awaitTo(fetch(`/api/users/${id}`).then(r => r.json()))
   
   if (error) {
-    // error est typé Error
+    // error is typed as Error
     console.error('Fetch failed:', error.message)
     return null
   }
   
-  // user est typé (pas unknown!)
+  // user is typed (not unknown!)
   return user
 }
 
 console.log('Pain Point 2 - Try/Catch:', value)
 
 // ============================================================================
-// PAIN POINT 3: Object.keys/entries qui renvoient string[]
-// Problème: Object.keys(obj) renvoie string[] au lieu de (keyof T)[]
+// PAIN POINT 3: Object.keys/entries that return string[]
+// Problem: Object.keys(obj) returns string[] instead of (keyof T)[]
 // ============================================================================
 
 import { keysTyped, entriesTyped, valuesTyped } from '../src/object'
@@ -140,20 +140,20 @@ const config = {
   debug: true,
 } as const
 
-// ❌ AVANT: Object.keys renvoie string[]
+// ❌ BEFORE: Object.keys returns string[]
 // const keys = Object.keys(config) // string[]
 // config[keys[0]] // Error: string can't index config
 
-// ✅ APRÈS: keysTyped renvoie (keyof T)[]
+// ✅ AFTER: keysTyped returns (keyof T)[]
 const keys = keysTyped(config)
 // Type: ('host' | 'port' | 'debug')[]
 
 for (const key of keys) {
-  const value = config[key] // Pas d'erreur!
+  const value = config[key] // No error!
   console.log(`${key}: ${value}`)
 }
 
-// entriesTyped avec types corrects
+// entriesTyped with correct types
 for (const [key, value] of entriesTyped(config)) {
   // key: 'host' | 'port' | 'debug'
   // value: string | number | boolean
@@ -164,7 +164,7 @@ console.log('Pain Point 3 - Object.keys:', keys)
 
 // ============================================================================
 // PAIN POINT 4: Deep Path Access (user.profile.settings.theme)
-// Problème: Accès aux propriétés imbriquées de manière type-safe
+// Problem: Type-safe access to nested properties
 // ============================================================================
 
 import { deepGet, deepGetOr, deepSet, deepHas, deepPluck } from '../src/object'
@@ -204,31 +204,31 @@ const appConfig: AppConfig = {
   },
 }
 
-// ❌ AVANT: Accès verbeux avec optional chaining
+// ❌ BEFORE: Verbose access with optional chaining
 // const theme = appConfig?.user?.profile?.settings?.theme
 
-// ✅ APRÈS: deepGet avec autocomplétion et type inference
+// ✅ AFTER: deepGet with autocomplete and type inference
 const theme = deepGet(appConfig, 'user.profile.settings.theme')
 // Type: 'light' | 'dark'
 
-// Pour les propriétés optionnelles, deepGet retourne undefined si le chemin n'existe pas
+// For optional properties, deepGet returns undefined if the path doesn't exist
 const preferences = deepGet(appConfig, 'user.preferences')
 // Type: { language: string } | undefined
 
-// Avec valeur par défaut
+// With a default value
 const safeTimeout = deepGetOr(appConfig, 'api.timeout', 3000)
 // Type: number (jamais undefined)
 
-// Vérifier l'existence
+// Check existence
 if (deepHas(appConfig, 'user.preferences')) {
   console.log('Preferences are set')
 }
 
-// Setter immutable
+// Immutable setter
 const updatedConfig = deepSet(appConfig, 'user.profile.settings.theme', 'light')
-// Retourne un nouvel objet, l'original est inchangé
+// Returns a new object, the original is unchanged
 
-// Pluck sur un array
+// Pluck on an array
 const allUsers: AppConfig[] = [appConfig, appConfig]
 const allThemes = deepPluck(allUsers, 'user.profile.settings.theme')
 // Type: ('light' | 'dark')[]
@@ -236,8 +236,8 @@ const allThemes = deepPluck(allUsers, 'user.profile.settings.theme')
 console.log('Pain Point 4 - Deep Path:', { theme, safeTimeout })
 
 // ============================================================================
-// PAIN POINT 5: JSON.parse qui renvoie any
-// Problème: Aucune garantie que l'API renvoie les bons champs
+// PAIN POINT 5: JSON.parse returning any
+// Problem: No guarantee the API returns the right fields
 // ============================================================================
 
 import {
@@ -257,7 +257,7 @@ import {
   type Infer,
 } from '../src/schema'
 
-// Définir un schéma de validation
+// Define a validation schema
 const UserSchema = object({
   id: number(),
   name: string(),
@@ -270,7 +270,7 @@ const UserSchema = object({
   tags: array(string()),
 })
 
-// Inférer le type TypeScript depuis le schéma
+// Infer the TypeScript type from the schema
 type ValidatedUser = Infer<typeof UserSchema>
 // Type: {
 //   id: number
@@ -281,10 +281,10 @@ type ValidatedUser = Infer<typeof UserSchema>
 //   tags: string[]
 // }
 
-// ❌ AVANT: JSON.parse renvoie any
+// ❌ BEFORE: JSON.parse returns any
 // const user = JSON.parse(jsonString) as User // Dangereux!
 
-// ✅ APRÈS: Validation runtime avec types
+// ✅ AFTER: Runtime validation with types
 const jsonString = `{
   "id": 1,
   "name": "Alice",
@@ -294,29 +294,29 @@ const jsonString = `{
   "tags": ["developer", "typescript"]
 }`
 
-// Safe parse avec Result
+// Safe parse with Result
 const parseResult = parseJson(UserSchema, jsonString)
 
 if (parseResult.ok) {
   const user = parseResult.value
-  // user est complètement typé et validé!
+  // user is fully typed and validated!
   console.log(`Welcome ${user.name} (${user.role})`)
 } else {
-  // Erreurs détaillées avec chemin
+  // Detailed errors with paths
   for (const error of parseResult.error) {
     console.error(`${error.path.join('.')}: ${error.message}`)
   }
 }
 
-// Type guard avec schéma
+// Type guard with schema
 function processApiResponse(data: unknown) {
   if (is(UserSchema, data)) {
-    // data est maintenant ValidatedUser
+    // data is now ValidatedUser
     console.log(data.email)
   }
 }
 
-// Parse qui throw (pour les cas où on veut une exception)
+// Parse that throws (for cases where you want an exception)
 try {
   const user = parse(UserSchema, JSON.parse(jsonString))
   console.log(user.name)
@@ -327,7 +327,7 @@ try {
 console.log('Pain Point 5 - JSON Validation:', parseResult.ok ? 'Valid!' : 'Invalid')
 
 // ============================================================================
-// PAIN POINT 6: Discriminated Unions et Exhaustive Checks
+// PAIN POINT 6: Discriminated unions and exhaustive checks
 // ============================================================================
 
 type ApiResponse =
@@ -336,7 +336,7 @@ type ApiResponse =
   | { status: 'error'; message: string }
 
 function handleResponse(response: ApiResponse): string {
-  // ✅ narrowUnion pour les discriminated unions
+  // ✅ narrowUnion for discriminated unions
   if (narrowUnion(response, 'status', 'success')) {
     // response est { status: 'success'; data: User[] }
     return `Loaded ${response.data.length} users`
@@ -355,33 +355,33 @@ const message = handleResponse(apiResponse)
 console.log('Pain Point 6 - Discriminated Unions:', message)
 
 // ============================================================================
-// BONUS: Combinateurs de Type Guards
+// BONUS: Type guard combinators
 // ============================================================================
 
-// Créer des guards complexes par composition
+// Create complex guards by composition
 const isStringOrNumber = oneOf(isString, isNumber)
 const isNotNull = not((v: unknown): v is null => v === null)
 
-// Guard pour arrays typés
+// Guard for typed arrays
 const isStringArray = arrayOf(isString)
 
-// Guard pour objets avec shape
+// Guard for objects with a shape
 const isUserShape = objectOf({
   id: isNumber,
   name: isString,
 })
 
-// Utilisation
+// Usage
 const testData = { id: 1, name: 'Test' }
 if (isUserShape(testData)) {
-  // testData est validé comme { id: number; name: string }
+  // testData is validated as { id: number; name: string }
   console.log(testData.name)
 }
 
 console.log('Bonus - Guard Combinators: Working!')
 
 // ============================================================================
-// RÉSUMÉ: Typetify transforme les types incertains en types certains
+// SUMMARY: Typetify turns uncertain types into reliable ones
 // ============================================================================
 
 console.log(`
@@ -392,7 +392,7 @@ console.log(`
 ║ 2. Try/Catch         → tryCatch, Result<T,E>, awaitTo            ║
 ║ 3. Object.keys       → keysTyped, entriesTyped, valuesTyped      ║
 ║ 4. Deep Path Access  → deepGet, deepSet, deepHas (type-safe!)    ║
-║ 5. JSON Validation   → Schema validation avec inférence de type  ║
+║ 5. JSON Validation   → Schema validation with type inference     ║
 ║ 6. Discriminated     → narrowUnion, switchUnion, exhaustiveCheck ║
 ╚══════════════════════════════════════════════════════════════════╝
 `)
