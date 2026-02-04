@@ -1,29 +1,65 @@
-# typetify
+<div align="center">
 
-> Runtime TypeScript helpers — like Lodash, but TS-first.
+# 🎯 Typetify
 
-[![npm version](https://img.shields.io/npm/v/typetify.svg)](https://www.npmjs.com/package/typetify)
-[![TypeScript](https://img.shields.io/badge/TypeScript-5.0+-blue.svg)](https://www.typescriptlang.org/)
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+[![npm version](https://img.shields.io/npm/v/typetify?style=flat-square&color=blue)](https://www.npmjs.com/package/typetify)
+[![license](https://img.shields.io/npm/l/typetify?style=flat-square&color=green)](https://opensource.org/licenses/MIT)
+[![TypeScript](https://img.shields.io/badge/TypeScript-5.0+-blue?style=flat-square&logo=typescript)](https://www.typescriptlang.org/)
+[![npm downloads](https://img.shields.io/npm/dm/typetify?style=flat-square&color=orange)](https://www.npmjs.com/package/typetify)
+[![bundle size](https://img.shields.io/bundlephobia/minzip/typetify?style=flat-square&color=purple)](https://bundlephobia.com/package/typetify)
 
-## Why typetify?
+**Runtime TypeScript helpers — like Lodash, but TS-first**
 
-TypeScript is powerful, but it doesn't protect you at runtime. Data from APIs, forms, localStorage, or JSON can break your app even when TypeScript says everything is fine.
+TypeScript is powerful, but it doesn't protect you at runtime. **Typetify** fills this gap with type-safe utilities that work when it matters most.
 
-**typetify** fills this gap with:
+<img src="YOUR_IMAGE_URL_HERE" alt="Typetify Logo" width="300" />
 
-- ✅ **Runtime safety** — Guards and assertions that work at runtime
-- ✅ **Perfect types** — IntelliSense that actually helps
-- ✅ **Zero dependencies** — Lightweight and tree-shakable
-- ✅ **Boring API** — No magic, no config, just functions
+[Documentation](#modules) | [Installation](#installation) | [Examples](#quick-start)
 
-## Installation
+</div>
+
+---
+
+## ✨ Features
+
+<table>
+<tr>
+<td width="50%">
+
+### 🛡️ Runtime Safety
+Guards and assertions that protect you when TypeScript can't — at runtime, where it matters.
+
+</td>
+<td width="50%">
+
+### 🎯 Perfect Types
+IntelliSense that actually helps. Every function is designed for maximum type inference.
+
+</td>
+</tr>
+<tr>
+<td width="50%">
+
+### 📦 Zero Dependencies
+Lightweight and tree-shakable. Only bundle what you use.
+
+</td>
+<td width="50%">
+
+### 🔧 No Magic
+Boring, predictable API. No config, no setup, just functions that work.
+
+</td>
+</tr>
+</table>
+
+## 📥 Installation
 
 ```bash
 npm install typetify
 ```
 
-## Quick Start
+## 🚀 Quick Start
 
 ```typescript
 import { isDefined, pick, awaitTo, safeJsonParse } from 'typetify'
@@ -53,9 +89,9 @@ if (result.ok) {
 }
 ```
 
-## Modules
+## 📚 Modules
 
-### Core — Foundations
+### 🔧 Core — Foundations
 
 ```typescript
 import { isDefined, isNil, assert, assertDefined, fail, noop, identity, unreachable } from 'typetify/core'
@@ -76,7 +112,7 @@ switch (status) {
 }
 ```
 
-### Guards — Type Guards
+### 🛡️ Guards — Type Guards
 
 ```typescript
 import { isObject, isString, isNumber, hasKey, hasKeys, isEmpty } from 'typetify/guards'
@@ -98,7 +134,7 @@ isEmpty({}) // true
 isEmpty(null) // true
 ```
 
-### Object — Object Manipulation
+### 📦 Object — Object Manipulation
 
 ```typescript
 import { pick, omit, keysTyped, mapObject, get, set } from 'typetify/object'
@@ -120,7 +156,7 @@ get(user, ['profile', 'name'])
 set(user, ['profile', 'age'], 30)
 ```
 
-### Async — Async Utilities
+### ⚡ Async — Async Utilities
 
 ```typescript
 import { awaitTo, retry, sleep, withTimeout, debounce, throttle, parallel } from 'typetify/async'
@@ -149,7 +185,7 @@ const debouncedSearch = debounce(search, 300)
 const throttledScroll = throttle(onScroll, 100)
 ```
 
-### Collection — Array Utilities
+### 📊 Collection — Array Utilities
 
 ```typescript
 import { unique, groupBy, partition, chunk, compact, sortBy, range } from 'typetify/collection'
@@ -178,7 +214,7 @@ sortBy(users, u => u.name)
 range(0, 5) // [0, 1, 2, 3, 4]
 ```
 
-### Input — Parse External Data
+### 🔍 Input — Parse External Data
 
 ```typescript
 import { safeJsonParse, parseNumber, parseBoolean, parseDate, coerceArray, defaults } from 'typetify/input'
@@ -205,7 +241,7 @@ defaults(null, 'fallback') // 'fallback'
 defaults('', 'fallback') // 'fallback'
 ```
 
-### Flow — Functional Utilities
+### 🌊 Flow — Functional Utilities
 
 ```typescript
 import { pipe, tap, when, match, tryCatch, ifElse } from 'typetify/flow'
@@ -238,7 +274,7 @@ if (result.ok) {
 }
 ```
 
-### DX — Developer Experience
+### 💎 DX — Developer Experience
 
 ```typescript
 import { debug, invariant, assertNever, todo, measure } from 'typetify/dx'
@@ -269,7 +305,7 @@ const { result, duration } = measure(() => heavyComputation())
 console.log(`Took ${duration}ms`)
 ```
 
-### Typed — Type Utilities
+### 🎨 Typed — Type Utilities
 
 ```typescript
 import { defineConst, defineEnum, brand, type DeepPartial, type Merge } from 'typetify/typed'
@@ -298,7 +334,7 @@ type PartialUser = DeepPartial<User>
 type MergedConfig = Merge<DefaultConfig, UserConfig>
 ```
 
-## Tree Shaking
+## 🌳 Tree Shaking
 
 Import only what you need:
 
@@ -311,17 +347,17 @@ import { pick } from 'typetify/object'
 import { isDefined, pick, awaitTo } from 'typetify'
 ```
 
-## Philosophy
+## 💭 Philosophy
 
 1. **Runtime first** — Types are great, but runtime safety matters more
 2. **No magic** — Every function does exactly what it says
 3. **Composable** — Small functions that work together
 4. **TypeScript-native** — Built for TS, not ported from JS
 
-## Contributing
+## 🤝 Contributing
 
 Contributions are welcome! Please read our contributing guidelines first.
 
-## License
+## 📄 License
 
 MIT © typetify
