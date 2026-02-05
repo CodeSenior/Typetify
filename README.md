@@ -1,6 +1,6 @@
 <div align="center">
 
-# 🎯 Typetify
+# Typetify
 
 [![npm version](https://img.shields.io/npm/v/typetify?style=flat-square&color=blue)](https://www.npmjs.com/package/typetify)
 [![license](https://img.shields.io/npm/l/typetify?style=flat-square&color=green)](https://opensource.org/licenses/MIT)
@@ -12,27 +12,26 @@
 
 TypeScript is powerful, but it doesn't protect you at runtime. **Typetify** fills this gap with type-safe utilities that work when it matters most.
 
-<img src="YOUR_IMAGE_URL_HERE" alt="Typetify Logo" width="300" />
+<img src="https://typetify.hosby.io/typetify-1.png" alt="Typetify Logo" width="300" />
 
-[Documentation](#modules) | [Installation](#installation) | [Examples](#quick-start)
-
+[Documentation](https://typetify.hosby.io)
 </div>
 
 ---
 
-## ✨ Features
+## Features
 
 <table>
 <tr>
 <td width="50%">
 
-### 🛡️ Runtime Safety
+### Runtime Safety
 Guards and assertions that protect you when TypeScript can't — at runtime, where it matters.
 
 </td>
 <td width="50%">
 
-### 🎯 Perfect Types
+### Perfect Types
 IntelliSense that actually helps. Every function is designed for maximum type inference.
 
 </td>
@@ -40,26 +39,26 @@ IntelliSense that actually helps. Every function is designed for maximum type in
 <tr>
 <td width="50%">
 
-### 📦 Zero Dependencies
+### Zero Dependencies
 Lightweight and tree-shakable. Only bundle what you use.
 
 </td>
 <td width="50%">
 
-### 🔧 No Magic
+### No Magic
 Boring, predictable API. No config, no setup, just functions that work.
 
 </td>
 </tr>
 </table>
 
-## 📥 Installation
+## Installation
 
 ```bash
 npm install typetify
 ```
 
-## 🚀 Quick Start
+## Quick Start
 
 ```typescript
 import { isDefined, pick, awaitTo, safeJsonParse } from 'typetify'
@@ -89,9 +88,29 @@ if (result.ok) {
 }
 ```
 
-## 📚 Modules
+### Using Underscore `_` (Lodash-style)
 
-### 🔧 Core — Foundations
+If you have naming conflicts with existing functions, use the underscore `_` namespace:
+
+```typescript
+// Import with underscore _ (just like Lodash!)
+import { _ } from 'typetify'
+
+// Use _.methodName() to avoid conflicts
+const defined = items.filter(_.isDefined)
+const safe = _.pick(user, ['id', 'name'])
+const [error, data] = await _.awaitTo(fetchUser(id))
+
+// Also works with default import
+import _ from 'typetify'
+
+// Or import * as
+import * as _ from 'typetify'
+```
+
+## Modules
+
+### Core — Foundations
 
 ```typescript
 import { isDefined, isNil, assert, assertDefined, fail, noop, identity, unreachable } from 'typetify/core'
@@ -112,7 +131,7 @@ switch (status) {
 }
 ```
 
-### 🛡️ Guards — Type Guards
+### Guards — Type Guards
 
 ```typescript
 import { isObject, isString, isNumber, hasKey, hasKeys, isEmpty } from 'typetify/guards'
@@ -134,7 +153,7 @@ isEmpty({}) // true
 isEmpty(null) // true
 ```
 
-### 📦 Object — Object Manipulation
+### Object — Object Manipulation
 
 ```typescript
 import { pick, omit, keysTyped, mapObject, get, set } from 'typetify/object'
@@ -156,7 +175,7 @@ get(user, ['profile', 'name'])
 set(user, ['profile', 'age'], 30)
 ```
 
-### ⚡ Async — Async Utilities
+### Async — Async Utilities
 
 ```typescript
 import { awaitTo, retry, sleep, withTimeout, debounce, throttle, parallel } from 'typetify/async'
@@ -185,7 +204,7 @@ const debouncedSearch = debounce(search, 300)
 const throttledScroll = throttle(onScroll, 100)
 ```
 
-### 📊 Collection — Array Utilities
+### Collection — Array Utilities
 
 ```typescript
 import { unique, groupBy, partition, chunk, compact, sortBy, range } from 'typetify/collection'
@@ -214,7 +233,7 @@ sortBy(users, u => u.name)
 range(0, 5) // [0, 1, 2, 3, 4]
 ```
 
-### 🔍 Input — Parse External Data
+### Input — Parse External Data
 
 ```typescript
 import { safeJsonParse, parseNumber, parseBoolean, parseDate, coerceArray, defaults } from 'typetify/input'
@@ -241,7 +260,7 @@ defaults(null, 'fallback') // 'fallback'
 defaults('', 'fallback') // 'fallback'
 ```
 
-### 🌊 Flow — Functional Utilities
+### Flow — Functional Utilities
 
 ```typescript
 import { pipe, tap, when, match, tryCatch, ifElse } from 'typetify/flow'
@@ -274,7 +293,7 @@ if (result.ok) {
 }
 ```
 
-### 💎 DX — Developer Experience
+### DX — Developer Experience
 
 ```typescript
 import { debug, invariant, assertNever, todo, measure } from 'typetify/dx'
@@ -334,7 +353,7 @@ type PartialUser = DeepPartial<User>
 type MergedConfig = Merge<DefaultConfig, UserConfig>
 ```
 
-## 🌳 Tree Shaking
+## Tree Shaking
 
 Import only what you need:
 
@@ -347,17 +366,17 @@ import { pick } from 'typetify/object'
 import { isDefined, pick, awaitTo } from 'typetify'
 ```
 
-## 💭 Philosophy
+## Philosophy
 
 1. **Runtime first** — Types are great, but runtime safety matters more
 2. **No magic** — Every function does exactly what it says
 3. **Composable** — Small functions that work together
 4. **TypeScript-native** — Built for TS, not ported from JS
 
-## 🤝 Contributing
+## Contributing
 
 Contributions are welcome! Please read our contributing guidelines first.
 
-## 📄 License
+## License
 
 MIT © typetify
