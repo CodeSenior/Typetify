@@ -27,6 +27,47 @@ export {
   hasKeys,
   isEmpty,
   isNonEmpty,
+  castArray,
+  cloneWith,
+  cloneDeepWith,
+  conformsTo,
+  eq,
+  gt,
+  gte,
+  lt,
+  lte,
+  isArguments,
+  isArrayBuffer,
+  isArrayLike,
+  isArrayLikeObject,
+  isBuffer,
+  isElement,
+  isEqualWith,
+  isFinite,
+  isInteger,
+  isLength,
+  isMap,
+  isMatch,
+  isMatchWith,
+  isNaN,
+  isNative,
+  isNull,
+  isUndefined,
+  isObjectLike,
+  isRegExp,
+  isSafeInteger,
+  isSet,
+  isTypedArray,
+  isWeakMap,
+  isWeakSet,
+  toArray,
+  toFinite,
+  toInteger,
+  toLength,
+  toNumber,
+  toPlainObject,
+  toSafeInteger,
+  toString,
 } from './guards'
 
 // Object
@@ -277,6 +318,58 @@ export {
   Lazy,
 } from './decorator'
 
+// Array
+export {
+  concat,
+  differenceBy,
+  differenceWith,
+  dropRight,
+  dropRightWhile,
+  fill,
+  findIndex,
+  findLastIndex,
+  flattenDeep,
+  flattenDepth,
+  fromPairs,
+  indexOf,
+  intersectionBy,
+  intersectionWith,
+  join,
+  lastIndexOf,
+  nth,
+  pull,
+  pullAll,
+  pullAllBy,
+  pullAllWith,
+  pullAt,
+  remove,
+  reverse,
+  slice,
+  sortedIndex,
+  sortedIndexBy,
+  sortedIndexOf,
+  sortedLastIndex,
+  sortedLastIndexBy,
+  sortedLastIndexOf,
+  sortedUniq,
+  sortedUniqBy,
+  takeRight,
+  takeRightWhile,
+  union,
+  unionBy,
+  unionWith,
+  uniqBy,
+  uniqWith,
+  unzipWith,
+  without,
+  xor,
+  xorBy,
+  xorWith,
+  zipObject,
+  zipObjectDeep,
+  zipWith,
+} from './array'
+
 // ============================================================================
 // NAMESPACE EXPORT
 // ============================================================================
@@ -304,6 +397,7 @@ import * as _fn from './fn'
 import * as _math from './math'
 import * as _result from './result'
 import * as _decorator from './decorator'
+import * as _array from './array'
 
 /**
  * Typetify namespace - import all utilities under a single alias (like Lodash)
@@ -336,6 +430,7 @@ export const _ = {
   ..._math,
   ..._result,
   ..._decorator,
+  ..._array,
 }
 
 // Also export as default for: import _ from 'typetify'
