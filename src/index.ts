@@ -318,6 +318,49 @@ export {
   Lazy,
 } from './decorator'
 
+// Reactive
+export {
+  signal,
+  computed,
+  effect,
+  batch,
+  createUndoableState,
+  createAutoUndoableState,
+} from './reactive'
+export type { Signal, ReadonlySignal, UndoableState, UndoableOptions } from './reactive'
+
+// Cache
+export { smartCache, memoize as smartMemoize } from './cache'
+export type { CacheOptions } from './cache'
+
+// Event
+export { createEventBus, createTypedEmitter } from './event'
+export type { EventBus } from './event'
+
+// Pipeline
+export { pipe as pipeValue, pipeAsync, flow } from './pipeline'
+export { createMiddleware, compose as composeMiddleware } from './pipeline'
+export type { Middleware, MiddlewarePipeline } from './pipeline'
+
+// DI
+export { createContainer, createTypedContainer } from './di'
+export type { Container } from './di'
+
+// Env
+export { env, createEnv } from './env'
+
+// Router
+export { route, createRouter } from './router'
+export type { Route, Router } from './router'
+
+// Form
+export { createForm, field } from './form'
+export type { FormState, FieldState } from './form'
+
+// Feature Flags
+export { createFeatureFlags, flag } from './feature'
+export type { FeatureFlags } from './feature'
+
 // Array
 export {
   concat,
@@ -398,6 +441,15 @@ import * as _math from './math'
 import * as _result from './result'
 import * as _decorator from './decorator'
 import * as _array from './array'
+import * as _reactive from './reactive'
+import * as _cache from './cache'
+import * as _event from './event'
+import * as _pipeline from './pipeline'
+import * as _di from './di'
+import * as _env from './env'
+import * as _router from './router'
+import * as _form from './form'
+import * as _feature from './feature'
 
 /**
  * Typetify namespace - import all utilities under a single alias (like Lodash)
@@ -431,6 +483,15 @@ export const _ = {
   ..._result,
   ..._decorator,
   ..._array,
+  ..._reactive,
+  ..._cache,
+  ..._event,
+  ..._pipeline,
+  ..._di,
+  ..._env,
+  ..._router,
+  ..._form,
+  ..._feature,
 }
 
 // Also export as default for: import _ from 'typetify'
