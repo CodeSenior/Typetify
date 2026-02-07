@@ -61,8 +61,6 @@ Boring, predictable API. No config, no setup, just functions that work.
 | Type narrowing | ❌ | ❌ | ✅ |
 | Zero dependencies | ❌ | ✅ | ✅ |
 | Tree-shakable | ⚠️ | ✅ | ✅ |
-| Full install size | 1.41MB | 1.2MB | **245KB** |
-| Min bundle (gzip) | 72KB | 51KB | **~15KB** |
 | Modern syntax | ❌ | ⚠️ | ✅ |
 | Frontend utilities | ❌ | ❌ | ✅ |
 | Backend utilities | ❌ | ❌ | ✅ |
