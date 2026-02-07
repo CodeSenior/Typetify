@@ -27,7 +27,7 @@ export default defineConfig({
     'http/index': 'src/http/index.ts',
     'datetime/index': 'src/datetime/index.ts',
     'path/index': 'src/path/index.ts',
-    'crypto/index': 'src/crypto/index.ts',
+    'encrypt/index': 'src/encrypt/index.ts',
   },
   format: ['cjs', 'esm'],
   dts: true,

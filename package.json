@@ -131,10 +131,10 @@
       "import": "./dist/path/index.mjs",
       "require": "./dist/path/index.js"
     },
-    "./crypto": {
-      "types": "./dist/crypto/index.d.ts",
-      "import": "./dist/crypto/index.mjs",
-      "require": "./dist/crypto/index.js"
+    "./encrypt": {
+      "types": "./dist/encrypt/index.d.ts",
+      "import": "./dist/encrypt/index.mjs",
+      "require": "./dist/encrypt/index.js"
     }
   },
   "files": [
