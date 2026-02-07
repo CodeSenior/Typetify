@@ -1,6 +1,6 @@
 {
   "name": "typetify",
-  "version": "4.0.1",
+  "version": "4.0.2",
   "description": "Runtime TypeScript helpers - like Lodash, but TS-first",
   "main": "./dist/index.js",
   "module": "./dist/index.mjs",
