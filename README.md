@@ -52,11 +52,37 @@ Boring, predictable API. No config, no setup, just functions that work.
 </tr>
 </table>
 
+## Why Typetify?
+
+| Feature | Lodash | Ramda | Typetify |
+|---------|--------|-------|----------|
+| TypeScript-first | ❌ | ❌ | ✅ |
+| Runtime safety | ❌ | ❌ | ✅ |
+| Type narrowing | ❌ | ❌ | ✅ |
+| Zero dependencies | ❌ | ✅ | ✅ |
+| Tree-shakable | ⚠️ | ✅ | ✅ |
+| Bundle size | 72KB | 51KB | **~15KB** |
+| Modern syntax | ❌ | ⚠️ | ✅ |
+
 ## Installation
 
 ```bash
+# npm
 npm install typetify
+
+# pnpm (faster)
+pnpm add typetify
+
+# yarn
+yarn add typetify
+
+# bun (fastest)
+bun add typetify
 ```
+
+**Requirements:**
+- Node.js >= 18
+- TypeScript >= 5.0 (recommended)
 
 ## Quick Start
 
@@ -86,6 +112,29 @@ if (result.ok) {
 } else {
   console.error(result.error)
 }
+```
+
+## Migrating from Lodash
+
+Typetify is designed to be a drop-in replacement for common Lodash patterns:
+
+| Lodash | Typetify | Benefit |
+|--------|----------|--------|
+| `_.isNil(x)` | `isNil(x)` | Same API, better types |
+| `_.pick(obj, keys)` | `pick(obj, keys)` | Type-safe keys |
+| `_.omit(obj, keys)` | `omit(obj, keys)` | Type-safe keys |
+| `_.uniq(arr)` | `unique(arr)` | Same behavior |
+| `_.groupBy(arr, fn)` | `groupBy(arr, fn)` | Better inference |
+| `_.chunk(arr, n)` | `chunk(arr, n)` | Same API |
+| `_.debounce(fn, ms)` | `debounce(fn, ms)` | Simpler API |
+
+**Bonus:** Use the `_` namespace to avoid migration conflicts:
+
+```typescript
+import { _ } from 'typetify'
+
+// Works exactly like Lodash
+const result = _.pick(user, ['id', 'name'])
 ```
 
 ### Using Underscore `_` (Lodash-style)
@@ -351,6 +400,65 @@ getUser(1 as PostId) // Error!
 // Type utilities
 type PartialUser = DeepPartial<User>
 type MergedConfig = Merge<DefaultConfig, UserConfig>
+```
+
+## Real-World Examples
+
+### API Response Validation
+
+```typescript
+import { hasKeys, isDefined, awaitTo } from 'typetify'
+
+async function fetchUser(id: string) {
+  const [error, response] = await awaitTo(fetch(`/api/users/${id}`))
+  if (error) return { error: 'Network error' }
+
+  const data = await response.json()
+  
+  // Runtime validation
+  if (!hasKeys(data, ['id', 'name', 'email'])) {
+    return { error: 'Invalid response format' }
+  }
+
+  return { data }
+}
+```
+
+### Form Data Processing
+
+```typescript
+import { parseNumber, parseBoolean, compact, defaults } from 'typetify'
+
+function processFormData(formData: FormData) {
+  return {
+    age: parseNumber(formData.get('age')),
+    newsletter: parseBoolean(formData.get('newsletter')),
+    tags: compact(formData.getAll('tags')),
+    bio: defaults(formData.get('bio'), 'No bio provided'),
+  }
+}
+```
+
+### Safe Error Handling
+
+```typescript
+import { awaitTo, retry, withTimeout } from 'typetify'
+
+async function fetchWithRetry(url: string) {
+  const [error, data] = await awaitTo(
+    retry(
+      () => withTimeout(fetch(url), 5000),
+      { attempts: 3, delay: 1000 }
+    )
+  )
+
+  if (error) {
+    console.error('Failed after retries:', error)
+    return null
+  }
+
+  return data
+}
 ```
 
 ## Tree Shaking

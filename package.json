@@ -103,7 +103,10 @@
     }
   },
   "files": [
-    "dist"
+    "dist",
+    "README.md",
+    "CHANGELOG.md",
+    "LICENSE"
   ],
   "scripts": {
     "build": "tsup",
@@ -113,7 +116,9 @@
     "typecheck": "tsc --noEmit",
     "lint": "eslint src --ext .ts",
     "prepublishOnly": "npm run typecheck && npm run test && npm run build",
-    "prepare": "npm run build"
+    "prepare": "npm run build",
+    "analyze": "npm pack --dry-run",
+    "size": "npm pack && tar -xvzf *.tgz && du -sh package && rm -rf package *.tgz"
   },
   "publishConfig": {
     "access": "public"
