@@ -61,8 +61,11 @@ Boring, predictable API. No config, no setup, just functions that work.
 | Type narrowing | ❌ | ❌ | ✅ |
 | Zero dependencies | ❌ | ✅ | ✅ |
 | Tree-shakable | ⚠️ | ✅ | ✅ |
-| Bundle size | 72KB | 51KB | **~15KB** |
+| Full install size | 1.41MB | 1.2MB | **245KB** |
+| Min bundle (gzip) | 72KB | 51KB | **~15KB** |
 | Modern syntax | ❌ | ⚠️ | ✅ |
+| Frontend utilities | ❌ | ❌ | ✅ |
+| Backend utilities | ❌ | ❌ | ✅ |
 
 ## Installation
 
@@ -403,6 +406,125 @@ type MergedConfig = Merge<DefaultConfig, UserConfig>
 ```
 
 ## Real-World Examples
+
+### 🎨 Frontend Focus
+
+```typescript
+import { 
+  // DOM
+  querySelector, classNames, addEventListener, isInViewport,
+  // Storage
+  localStorageTyped, withExpiry, getCookie,
+  // Color
+  lighten, darken, getContrastColor, opacity
+} from 'typetify'
+
+// Type-safe DOM manipulation
+const button = querySelector<HTMLButtonElement>('#submit')
+if (button) {
+  button.className = classNames('btn', { 'btn-primary': isPrimary, 'btn-disabled': disabled })
+}
+
+// Event handling with automatic cleanup
+const cleanup = addEventListener(button, 'click', () => {
+  console.log('Clicked!')
+})
+// Later: cleanup()
+
+// Lazy loading with viewport detection
+const images = querySelectorAll<HTMLImageElement>('img[data-src]')
+images.forEach(img => {
+  if (isInViewport(img)) {
+    img.src = img.dataset.src!
+  }
+})
+
+// Type-safe localStorage
+interface UserPrefs {
+  theme: 'light' | 'dark'
+  language: string
+}
+const prefs = localStorageTyped<UserPrefs>('user-prefs')
+prefs.set({ theme: 'dark', language: 'en' })
+const theme = prefs.get()?.theme // 'dark' | 'light' | undefined
+
+// Storage with expiration
+const cache = withExpiry<ApiResponse>('api-cache', {
+  storage: sessionStorage,
+  ttl: 5 * 60 * 1000 // 5 minutes
+})
+
+// Dynamic theming with color utilities
+const primaryColor = '#3b82f6'
+const hoverColor = lighten(primaryColor, 10)
+const activeColor = darken(primaryColor, 10)
+const textColor = getContrastColor(primaryColor) // '#ffffff' or '#000000'
+const overlay = opacity('#000000', 0.5) // 'rgba(0, 0, 0, 0.5)'
+```
+
+### 🔧 Backend Focus
+
+```typescript
+import {
+  // HTTP
+  createHttpClient, requestWithRetry, bearerAuth, buildUrl,
+  // DateTime
+  formatDate, addTime, timeAgo, isBetween, parseDuration,
+  // Path
+  joinPath, parsePath, normalizePath, relativePath,
+  // Crypto
+  sha256, hmac, uuid, generateToken, base64Encode
+} from 'typetify'
+
+// Type-safe HTTP client with interceptors
+const api = createHttpClient({
+  baseUrl: 'https://api.example.com',
+  timeout: 5000,
+  headers: { Authorization: bearerAuth(token) },
+  interceptors: {
+    request: (opts) => {
+      opts.headers = { ...opts.headers, 'X-Request-Id': uuid() }
+      return opts
+    }
+  }
+})
+
+const users = await api.get<User[]>('/users')
+const user = await api.post<User>('/users', { body: { name: 'John' } })
+
+// Retry with exponential backoff
+const data = await requestWithRetry<Data>('/api/data', {
+  maxRetries: 3,
+  delay: 1000,
+  backoff: 'exponential'
+})
+
+// Date manipulation
+const now = new Date()
+const nextWeek = addTime(now, 7, 'days')
+const formatted = formatDate(now, 'YYYY-MM-DD HH:mm')
+console.log(timeAgo(lastLogin)) // '2 hours ago'
+
+// Check booking availability
+if (isBetween(requestedDate, bookingStart, bookingEnd)) {
+  allowBooking()
+}
+
+// Parse duration strings
+const ttl = parseDuration('2h 30m') // 9000000 (ms)
+
+// Cross-platform path handling
+const configPath = joinPath('/etc', 'app', 'config.json')
+const { name, ext } = parsePath('/var/log/app.log') // { name: 'app', ext: '.log' }
+const normalized = normalizePath('/home/user/../admin/./file.txt') // '/home/admin/file.txt'
+
+// Cryptographic utilities
+const hashedPassword = await sha256(password + salt)
+const signature = await hmac(payload, webhookSecret)
+const sessionId = uuid()
+const apiKey = generateToken(32)
+const encoded = base64Encode(JSON.stringify(data))
+```
 
 ### API Response Validation
 

@@ -5,6 +5,47 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [3.0.0] - 2026-02-07
+
+### Added
+- **HTTP Module** (Backend Focus): 18 functions for type-safe HTTP requests
+  - `request`, `get`, `post`, `put`, `patch`, `del` - HTTP methods with typed responses
+  - `buildUrl` - URL construction with query parameters
+  - `createHttpClient` - Configurable HTTP client with interceptors
+  - `requestWithRetry`, `withRetry` - Automatic retry with exponential backoff
+  - `HttpHeaders`, `ContentTypes` - Common HTTP constants
+  - `parseAuthHeader`, `bearerAuth`, `basicAuth` - Authentication helpers
+  - `parseCookieHeader`, `buildCookieHeader`, `mergeHeaders` - Header utilities
+
+- **DateTime Module** (Backend Focus): 26 functions for date manipulation
+  - `toDate`, `formatDate`, `toISODateString`, `toISOString` - Date formatting
+  - `toUnixTimestamp`, `fromUnixTimestamp` - Unix timestamp conversion
+  - `addTime`, `subtractTime`, `startOf`, `endOf`, `diff` - Date manipulation
+  - `isBefore`, `isAfter`, `isSameDate`, `isSameDay`, `isBetween` - Date comparison
+  - `isToday`, `isYesterday`, `isTomorrow`, `isPast`, `isFuture` - Relative checks
+  - `isLeapYear`, `isWeekend`, `isWeekday` - Date utilities
+  - `timeAgo`, `formatDuration`, `parseDuration` - Human-readable durations
+
+- **Path Module** (Backend Focus): 14 functions for path manipulation
+  - `parsePath`, `dirname`, `basename`, `extname` - Path parsing
+  - `joinPath`, `resolvePath`, `relativePath` - Path joining
+  - `normalizePath`, `isAbsolute`, `toPosix`, `toWindows` - Path normalization
+  - `removeTrailingSlash`, `ensureTrailingSlash`, `commonPath` - Path utilities
+
+- **Crypto Module** (Backend Focus): 20 functions for cryptography
+  - `hash`, `sha256`, `sha512`, `hmac` - Hashing functions
+  - `timingSafeEqual` - Timing-safe string comparison
+  - `uuid`, `randomBytes`, `randomString`, `randomInt` - Random generation
+  - `generateToken`, `urlSafeToken` - Token generation
+  - `base64Encode`, `base64Decode`, `base64UrlEncode`, `base64UrlDecode` - Base64 encoding
+  - `stringToHex`, `hexToString`, `bytesToHex`, `hexToBytes` - Hex encoding
+  - `utf8Encode`, `utf8Decode` - UTF-8 encoding
+
+### Changed
+- Added HTTP, DateTime, Path, and Crypto modules to namespace `_`
+- Updated documentation with all new backend-focused utilities
+- **BREAKING**: Major version bump to 3.0.0
+
 ## [2.4.0] - 2026-02-07
 
 ### Added

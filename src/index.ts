@@ -444,6 +444,107 @@ export {
 } from './color'
 export type { RGB, HSL } from './color'
 
+// HTTP
+export {
+  request as httpRequest,
+  get as httpGet,
+  post as httpPost,
+  put as httpPut,
+  patch as httpPatch,
+  del as httpDelete,
+  buildUrl,
+  HttpError,
+  createHttpClient,
+  requestWithRetry,
+  withRetry,
+  HttpHeaders,
+  ContentTypes,
+  parseAuthHeader,
+  bearerAuth,
+  basicAuth,
+  parseCookieHeader,
+  buildCookieHeader,
+  mergeHeaders,
+} from './http'
+export type { RequestOptions, HttpResponse, HttpClientConfig, HttpClient, RetryOptions as HttpRetryOptions } from './http'
+
+// DateTime
+export {
+  toDate,
+  formatDate,
+  toISODateString,
+  toISOString,
+  toUnixTimestamp,
+  fromUnixTimestamp,
+  addTime,
+  subtractTime,
+  startOf,
+  endOf,
+  diff,
+  isBefore,
+  isAfter,
+  isSameDate,
+  isSameDay,
+  isBetween,
+  isToday,
+  isYesterday,
+  isTomorrow,
+  isPast,
+  isFuture,
+  isLeapYear,
+  isWeekend,
+  isWeekday,
+  timeAgo,
+  formatDuration,
+  parseDuration,
+} from './datetime'
+export type { DateInput, DurationUnit, RelativeTimeOptions } from './datetime'
+
+// Path
+export {
+  parsePath,
+  dirname,
+  basename,
+  extname,
+  joinPath,
+  resolvePath,
+  relativePath,
+  normalizePath,
+  isAbsolute as isAbsolutePath,
+  toPosix,
+  toWindows,
+  removeTrailingSlash,
+  ensureTrailingSlash,
+  commonPath,
+} from './path'
+export type { ParsedPath } from './path'
+
+// Crypto
+export {
+  hash,
+  sha256,
+  sha512,
+  hmac,
+  timingSafeEqual,
+  uuid,
+  randomBytes,
+  randomString,
+  randomInt as cryptoRandomInt,
+  generateToken,
+  urlSafeToken,
+  base64Encode,
+  base64Decode,
+  base64UrlEncode,
+  base64UrlDecode,
+  stringToHex,
+  hexToString,
+  bytesToHex,
+  hexToBytes,
+  utf8Encode,
+  utf8Decode,
+} from './encrypt'
+export type { HashAlgorithm } from './encrypt'
+
 // Array
 export {
   concat,
@@ -541,6 +642,10 @@ import * as _feature from './feature'
 import * as _dom from './dom'
 import * as _storage from './storage'
 import * as _color from './color'
+import * as _http from './http'
+import * as _datetime from './datetime'
+import * as _path from './path'
+import * as _encrypt from './encrypt'
 
 /**
  * Typetify namespace - import all utilities under a single alias (like Lodash)
@@ -591,6 +696,10 @@ export const _ = {
   ..._dom,
   ..._storage,
   ..._color,
+  ..._http,
+  ..._datetime,
+  ..._path,
+  ..._encrypt,
 } as const
 
 export default _
