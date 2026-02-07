@@ -1,0 +1,7 @@
+export { createStorage, localStorageTyped, sessionStorageTyped } from './createStorage'
+export type { StorageOptions, TypedStorage } from './createStorage'
+export { withExpiry } from './withExpiry'
+export type { ExpiryStorageOptions, ExpiryStorage } from './withExpiry'
+export { createMemoryStorage } from './memoryStorage'
+export { getCookie, setCookie, removeCookie, hasCookie } from './cookies'
+export type { CookieOptions } from './cookies'

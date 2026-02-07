@@ -1,6 +1,6 @@
 {
   "name": "typetify",
-  "version": "2.2.0",
+  "version": "2.4.0",
   "description": "Runtime TypeScript helpers - like Lodash, but TS-first",
   "main": "./dist/index.js",
   "module": "./dist/index.mjs",
@@ -100,6 +100,21 @@
       "types": "./dist/schema/index.d.ts",
       "import": "./dist/schema/index.mjs",
       "require": "./dist/schema/index.js"
+    },
+    "./dom": {
+      "types": "./dist/dom/index.d.ts",
+      "import": "./dist/dom/index.mjs",
+      "require": "./dist/dom/index.js"
+    },
+    "./storage": {
+      "types": "./dist/storage/index.d.ts",
+      "import": "./dist/storage/index.mjs",
+      "require": "./dist/storage/index.js"
+    },
+    "./color": {
+      "types": "./dist/color/index.d.ts",
+      "import": "./dist/color/index.mjs",
+      "require": "./dist/color/index.js"
     }
   },
   "files": [

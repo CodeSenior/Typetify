@@ -92,6 +92,10 @@ export {
   unset,
   paths,
   transform,
+  findKey,
+  findLastKey,
+  at,
+  invertBy,
 } from './object'
 
 // Async
@@ -140,6 +144,10 @@ export {
   head,
   tail,
   init,
+  reject,
+  size,
+  keyBy,
+  sampleSize,
 } from './collection'
 
 // Input
@@ -245,6 +253,13 @@ export {
   slugify,
   template,
   words,
+  deburr,
+  escape,
+  unescape,
+  escapeRegExp,
+  pad,
+  padStart,
+  padEnd,
 } from './string'
 
 // Function
@@ -361,6 +376,74 @@ export type { FormState, FieldState } from './form'
 export { createFeatureFlags, flag } from './feature'
 export type { FeatureFlags } from './feature'
 
+// DOM
+export {
+  querySelector,
+  querySelectorAll,
+  classNames,
+  addClass,
+  removeClass,
+  toggleClass,
+  hasClass,
+  addEventListener,
+  once as onceEvent,
+  delegate,
+  isInViewport,
+  getRect,
+  scrollIntoView,
+  scrollTo,
+  getScrollPosition,
+  setStyle,
+  setStyles,
+  getComputedStyleValue,
+  getComputedStyles,
+  show,
+  hide,
+  toggle,
+} from './dom'
+
+// Storage
+export {
+  createStorage,
+  localStorageTyped,
+  sessionStorageTyped,
+  withExpiry,
+  createMemoryStorage,
+  getCookie,
+  setCookie,
+  removeCookie,
+  hasCookie,
+} from './storage'
+export type { StorageOptions, TypedStorage, ExpiryStorageOptions, ExpiryStorage, CookieOptions } from './storage'
+
+// Color
+export {
+  hexToRgb,
+  rgbToHex,
+  rgbToHsl,
+  hslToRgb,
+  parseColor,
+  formatRgb,
+  formatHsl,
+  lighten,
+  darken,
+  saturate,
+  desaturate,
+  opacity,
+  mix,
+  invert as invertColor,
+  grayscale,
+  luminance,
+  contrast,
+  isLight,
+  isDark,
+  getContrastColor,
+  isSimilar,
+  getDominant,
+  getTemperature,
+} from './color'
+export type { RGB, HSL } from './color'
+
 // Array
 export {
   concat,
@@ -455,6 +538,9 @@ import * as _env from './env'
 import * as _router from './router'
 import * as _form from './form'
 import * as _feature from './feature'
+import * as _dom from './dom'
+import * as _storage from './storage'
+import * as _color from './color'
 
 /**
  * Typetify namespace - import all utilities under a single alias (like Lodash)
@@ -502,7 +588,9 @@ export const _ = {
   ..._router,
   ..._form,
   ..._feature,
-}
+  ..._dom,
+  ..._storage,
+  ..._color,
+} as const
 
-// Also export as default for: import _ from 'typetify'
 export default _
