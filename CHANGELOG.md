@@ -5,6 +5,67 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2.4.0] - 2026-02-07
+
+### Added
+- **DOM Module** (Frontend Focus): 23 functions for type-safe DOM manipulation
+  - `querySelector`, `querySelectorAll` - Type-safe element selection
+  - `classNames`, `addClass`, `removeClass`, `toggleClass`, `hasClass` - Class management
+  - `addEventListener`, `once`, `delegate` - Event handling with cleanup
+  - `isInViewport`, `getRect`, `scrollIntoView`, `scrollTo`, `getScrollPosition` - Viewport utilities
+  - `setStyle`, `setStyles`, `getComputedStyleValue`, `show`, `hide`, `toggle` - Style manipulation
+
+- **Storage Module** (Frontend Focus): 9 functions for type-safe storage
+  - `createStorage`, `localStorageTyped`, `sessionStorageTyped` - Type-safe storage wrappers
+  - `withExpiry` - Storage with automatic expiration
+  - `createMemoryStorage` - In-memory storage for SSR/testing
+  - `getCookie`, `setCookie`, `removeCookie`, `hasCookie` - Cookie management
+
+- **Color Module** (Frontend Focus): 22 functions for color manipulation
+  - `hexToRgb`, `rgbToHex`, `rgbToHsl`, `hslToRgb` - Color format conversion
+  - `parseColor`, `formatRgb`, `formatHsl` - Color parsing and formatting
+  - `lighten`, `darken`, `saturate`, `desaturate`, `opacity`, `mix` - Color manipulation
+  - `invert`, `grayscale` - Color transformations
+  - `luminance`, `contrast`, `isLight`, `isDark`, `getContrastColor` - Color analysis
+  - `isSimilar`, `getDominant`, `getTemperature` - Advanced color utilities
+
+### Changed
+- Added DOM, Storage, and Color modules to namespace `_`
+- Updated documentation with all new frontend-focused utilities
+- Renamed `invert` from color module to `invertColor` to avoid conflict with object module
+
+## [2.3.0] - 2026-02-07
+
+### Added
+- **Collection**: 4 new functions
+  - `reject` - Returns elements that do NOT match the predicate (opposite of filter)
+  - `size` - Returns the size of any collection (array, object, string, Map, Set)
+  - `keyBy` - Creates an object indexed by a key function
+  - `sampleSize` - Returns N random elements from an array
+
+- **String**: 7 new functions
+  - `deburr` - Removes diacritical marks (accents) from strings
+  - `escape` - Escapes HTML special characters to prevent XSS
+  - `unescape` - Converts HTML entities back to characters
+  - `escapeRegExp` - Escapes special RegExp characters
+  - `pad` - Pads a string on both sides
+  - `padStart` - Pads a string on the left
+  - `padEnd` - Pads a string on the right
+
+- **Object**: 4 new functions
+  - `findKey` - Finds the first key where predicate returns true
+  - `findLastKey` - Finds the last key where predicate returns true
+  - `at` - Gets values at multiple paths from an object
+  - `invertBy` - Inverts object keys/values with grouping
+
+### Changed
+- Updated documentation with all new functions and examples
+
+## [2.2.0] - 2026-02-07
+
+### Changed
+- Version bump for documentation updates
+
 ## [2.1.0] - 2026-02-07
 
 ### Added
