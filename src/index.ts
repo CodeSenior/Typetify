@@ -441,6 +441,11 @@ import * as _math from './math'
 import * as _result from './result'
 import * as _decorator from './decorator'
 import * as _array from './array'
+// Note: _typed excluded from namespace due to unique symbol export limitations
+import * as _logic from './logic'
+import * as _iterator from './iterator'
+import * as _narrowing from './narrowing'
+import * as _schema from './schema'
 import * as _reactive from './reactive'
 import * as _cache from './cache'
 import * as _event from './event'
@@ -483,6 +488,11 @@ export const _ = {
   ..._result,
   ..._decorator,
   ..._array,
+  // typed: excluded due to unique symbol export limitations - use direct imports
+  ..._logic,
+  ..._iterator,
+  ..._narrowing,
+  ..._schema,
   ..._reactive,
   ..._cache,
   ..._event,

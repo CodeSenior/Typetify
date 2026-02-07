@@ -11,16 +11,16 @@ import type { Prettify } from './types'
 // PRIMITIVE TYPE MARKERS
 // =============================================================================
 
-const STRING_MARKER = Symbol('string')
-const NUMBER_MARKER = Symbol('number')
-const BOOLEAN_MARKER = Symbol('boolean')
-const DATE_MARKER = Symbol('date')
-const BIGINT_MARKER = Symbol('bigint')
-const SYMBOL_MARKER = Symbol('symbol')
-const ANY_MARKER = Symbol('any')
-const UNKNOWN_MARKER = Symbol('unknown')
-const NULL_MARKER = Symbol('null')
-const UNDEFINED_MARKER = Symbol('undefined')
+export const STRING_MARKER: unique symbol = Symbol('string')
+export const NUMBER_MARKER: unique symbol = Symbol('number')
+export const BOOLEAN_MARKER: unique symbol = Symbol('boolean')
+export const DATE_MARKER: unique symbol = Symbol('date')
+export const BIGINT_MARKER: unique symbol = Symbol('bigint')
+export const SYMBOL_MARKER: unique symbol = Symbol('symbol')
+export const ANY_MARKER: unique symbol = Symbol('any')
+export const UNKNOWN_MARKER: unique symbol = Symbol('unknown')
+export const NULL_MARKER: unique symbol = Symbol('null')
+export const UNDEFINED_MARKER: unique symbol = Symbol('undefined')
 
 export const t = {
   string: { [STRING_MARKER]: true } as const,
