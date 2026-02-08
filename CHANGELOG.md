@@ -5,6 +5,26 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [4.1.0] - 2026-02-08
+
+### Added
+- **Collection Module**: Added `partitionObject` function
+
+### Changed
+- Added Partition module to namespace `_`
+- Updated documentation with all new backend-focused utilities
+- **BREAKING**: Minor version bump to 4.1.0
+
+## [4.0.1] - 2026-02-07
+
+### Added
+- **Encrypt Module** (Backend Focus): 20 functions for cryptography
+
+### Changed
+- Added Encrypt module to namespace `_`
+- Updated documentation with all new backend-focused utilities
+- **BREAKING**: Major version bump to 4.0.1
+
 ## [3.0.0] - 2026-02-07
 
 ### Added

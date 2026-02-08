@@ -95,7 +95,7 @@ export {
   findKey,
   findLastKey,
   at,
-  invertBy,
+  invertBy
 } from './object'
 
 // Async
@@ -148,6 +148,7 @@ export {
   size,
   keyBy,
   sampleSize,
+  partitionObject,
 } from './collection'
 
 // Input

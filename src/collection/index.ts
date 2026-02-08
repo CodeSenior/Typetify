@@ -31,3 +31,5 @@ export { reject } from './reject'
 export { size } from './size'
 export { keyBy } from './keyBy'
 export { sampleSize } from './sampleSize'
+export { partitionObject } from './partitionObject'
+
