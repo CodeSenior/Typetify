@@ -110,8 +110,9 @@ export {
   onceAsync,
   defer,
   parallel,
+  sequence,
 } from './async'
-export type { RetryOptions, Deferred } from './async'
+export type { RetryOptions, Deferred, SequenceResult, SequenceSuccess, SequenceError } from './async'
 
 // Collection
 export {

@@ -228,10 +228,25 @@ set(user, ['profile', 'age'], 30)
 ### Async — Async Utilities
 
 ```typescript
-import { awaitTo, retry, sleep, withTimeout, debounce, throttle, parallel } from 'typetify/async'
+import { awaitTo, retry, sleep, withTimeout, debounce, throttle, parallel, sequence } from 'typetify/async'
 
 // awaitTo — No more try/catch
 const [error, user] = await awaitTo(fetchUser(id))
+
+// sequence — Execute async operations in sequence (cleaner than multiple awaitTo)
+const result = await sequence([
+  () => fetchUser(id),
+  (user) => fetchProfile(user.id),
+  (profile) => fetchOrders(profile.userId)
+])
+
+if (!result.ok) {
+  console.error('Failed at step:', result.step, result.error)
+  console.log('Partial results:', result.partial)
+  return
+}
+
+const [user, profile, orders] = result.data
 
 // retry — Retry with backoff
 const data = await retry(() => fetchData(), {

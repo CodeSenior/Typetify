@@ -5,6 +5,19 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [4.2.0] - 2026-02-09
+
+### Added
+- **Async Module**: Added `sequence()` helper for cleaner sequential async operations
+  - Stops at first error with detailed error reporting
+  - Returns partial results for debugging
+  - Cleaner than chaining multiple `awaitTo()` calls
+  - Based on community feedback from Dev.to
+
+### Improved
+- Better error handling for sequential async operations
+- Enhanced TypeScript types for `sequence()` result
+
 ## [4.1.0] - 2026-02-08
 
 ### Added

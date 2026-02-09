@@ -34,6 +34,28 @@ export default defineConfig({
   splitting: true,
   sourcemap: false,
   clean: true,
-  treeshake: true,
-  minify: true,
+  treeshake: {
+    preset: 'smallest',
+    moduleSideEffects: false,
+  },
+  minify: 'terser',
+  minifyWhitespace: true,
+  minifyIdentifiers: true,
+  minifySyntax: true,
+  terserOptions: {
+    compress: {
+      passes: 2,
+      pure_getters: true,
+      unsafe: true,
+      unsafe_comps: true,
+      unsafe_math: true,
+      unsafe_methods: true,
+    },
+    mangle: {
+      properties: false,
+    },
+    format: {
+      comments: false,
+    },
+  },
 })
