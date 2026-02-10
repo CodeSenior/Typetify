@@ -13,6 +13,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - Returns partial results for debugging
   - Cleaner than chaining multiple `awaitTo()` calls
   - Based on community feedback from Dev.to
+- **Async Result Helpers**: New utilities for working with `Promise<Result>`
+  - `allResults()` - Collect all Promise<Result> outcomes into a single Result
+  - `allResultsSync()` - Synchronous version for already resolved Results
+  - `anyResult()` - Return first successful Result (fallback pattern)
+  - `anyResultSync()` - Synchronous version for already resolved Results
+  - `partitionResults()` - Partition Results into successes and failures
+  - `collectResults()` - Collect all results without short-circuiting
 
 ### Improved
 - Better error handling for sequential async operations

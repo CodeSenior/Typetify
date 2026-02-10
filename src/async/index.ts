@@ -12,3 +12,11 @@ export type { Deferred } from './defer'
 export { parallel } from './parallel'
 export { sequence } from './sequence'
 export type { SequenceResult, SequenceSuccess, SequenceError } from './sequence'
+export {
+  allResults,
+  allResultsSync,
+  anyResult,
+  anyResultSync,
+  partitionResults,
+  collectResults
+} from './resultHelpers'

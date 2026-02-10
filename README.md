@@ -267,6 +267,15 @@ const results = await parallel(
 // debounce/throttle
 const debouncedSearch = debounce(search, 300)
 const throttledScroll = throttle(onScroll, 100)
+
+// allResults — Collect all Promise<Result> outcomes
+const results = await allResults([fetchUser(1), fetchUser(2), fetchUser(3)])
+if (results.ok) {
+  const [user1, user2, user3] = results.value
+}
+
+// anyResult — First successful Result (fallback pattern)
+const config = await anyResult([loadFromEnv(), loadFromFile(), loadDefaults()])
 ```
 
 ### Collection — Array Utilities

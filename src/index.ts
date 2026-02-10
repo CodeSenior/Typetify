@@ -111,6 +111,12 @@ export {
   defer,
   parallel,
   sequence,
+  allResults,
+  allResultsSync,
+  anyResult,
+  anyResultSync,
+  partitionResults,
+  collectResults,
 } from './async'
 export type { RetryOptions, Deferred, SequenceResult, SequenceSuccess, SequenceError } from './async'
 
