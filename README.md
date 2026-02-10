@@ -14,7 +14,7 @@ TypeScript is powerful, but it doesn't protect you at runtime. **Typetify** fill
 
 <img src="https://typetify.hosby.io/typetify-1.png" alt="Typetify Logo" width="300" />
 
-[Documentation](https://typetify.hosby.io)
+[Documentation](https://typetify.com)
 </div>
 
 ---
